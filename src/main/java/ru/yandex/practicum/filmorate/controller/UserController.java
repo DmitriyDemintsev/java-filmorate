@@ -33,12 +33,11 @@ public class UserController {
         if (!users.containsKey(user.getId())) {
             users.put(user.getId(), user);
             log.debug("Создан новый пользователь с электронной почтой " + user.getEmail());
+        } else {
+            log.debug("Передаваемый id " + user.getId() + " уже есть в списке");
+            throw new UserAlreadyExistException("Прльзователь с таким id " + user.getId()
+                    + " уже есть в списке");
         }
-        else {
-                log.debug("Передаваемый id " + user.getId() + " уже есть в списке");
-                throw new UserAlreadyExistException("Прльзователь с таким id " + user.getId()
-                        + " уже есть в списке");
-            }
         return user;
     }
 
@@ -48,14 +47,12 @@ public class UserController {
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
             log.debug("Обновлены данные пользователя с электронной почтой " + user.getEmail());
-
+        } else {
+            log.debug("Невозможно обновить данные, пользователь с id " + user.getId()
+                    + " отсутствует в списке пользователей");
+            throw new UserAlreadyExistException("Пользователь с таким id " + user.getId()
+                    + " отсутствует в списке");
         }
-        else {
-                log.debug("Невозможно обновить данные, пользователь с id " + user.getId()
-                        + " отсутствует в списке пользователей");
-                throw new UserAlreadyExistException("Пользователь с таким id " + user.getId()
-                        + " отсутствует в списке");
-            }
         return user;
     }
 
