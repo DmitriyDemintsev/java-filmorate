@@ -52,7 +52,7 @@ public class FilmController {
         return new ArrayList<>(films.values());
     }
 
-    protected void validateFilm (@RequestBody Film film) {
+    protected void validateFilm(@RequestBody Film film) {
         if (film.getName() == null || film.getName().isEmpty()) {
             log.debug("Отсутствует название фильма");
             throw new ValidationException("Не указано название фильма");
