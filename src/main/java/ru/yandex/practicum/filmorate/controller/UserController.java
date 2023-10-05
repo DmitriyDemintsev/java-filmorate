@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    UserStorage userStorage = new UserStorage();
+    private final UserStorage userStorage = new UserStorage();
 
     @PostMapping
     public User create(@RequestBody User user) throws UserAlreadyExistException {
@@ -36,7 +36,7 @@ public class UserController {
         return userStorage.findUsers();
     }
 
-    public void validateUser(@RequestBody User user) {
+    private void validateUser(User user) {
         LocalDate data = LocalDate.now();
 
         if (user.getEmail() == null || user.getEmail().isBlank()) {

@@ -14,9 +14,9 @@ import java.util.ArrayList;
 @RequestMapping("/films")
 public class FilmController {
     private static final int MAX_LENGTH_DESCRIPTION = 200;
-    static LocalDate checkData = LocalDate.of(1895, 12, 28);
+    private static LocalDate checkData = LocalDate.of(1895, 12, 28);
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    FilmStorage filmStorage = new FilmStorage();
+    private final FilmStorage filmStorage = new FilmStorage();
 
     @PostMapping
     public Film create(@RequestBody Film film) {
@@ -35,7 +35,7 @@ public class FilmController {
         return filmStorage.findAll();
     }
 
-    private static void validateFilm(@RequestBody Film film) {
+    private void validateFilm(Film film) {
         if (film.getName() == null || film.getName().isEmpty()) {
             log.debug("Отсутствует название фильма");
             throw new ValidationException("Не указано название фильма");
