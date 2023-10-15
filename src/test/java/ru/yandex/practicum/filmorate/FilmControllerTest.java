@@ -5,6 +5,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -93,9 +94,9 @@ public class FilmControllerTest {
         assertEquals(film1.getReleaseDate(), releaseDate2);
         assertEquals(film1.getDuration(), 180);
 
-        assertThrows(ValidationException.class, new Executable() {
+        assertThrows(FilmNotFoundException.class, new Executable() {
             @Override
-            public void execute() throws ValidationException {
+            public void execute() throws FilmNotFoundException {
                 filmController.put(film2);
             }
         });
