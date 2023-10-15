@@ -19,7 +19,7 @@ public class FilmService {
         this.filmStorage = filmStorage;
     }
 
-    public void addLike (Film film, User user) { // добвляем лайки фильму
+    public void addLike(Film film, User user) { // добвляем лайки фильму
         if (!film.getLikes().contains(user.getId())) {
             film.addLike(user.getId());
         } else {
