@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
 
+    private static final int MAX_LENGTH_DESCRIPTION = 200;
     private final FilmService filmService;
     private final UserService userService;
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private static final int MAX_LENGTH_DESCRIPTION = 200;
     private static LocalDate checkData = LocalDate.of(1895, 12, 28);
 
     @Autowired
