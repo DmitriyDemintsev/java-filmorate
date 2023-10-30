@@ -19,8 +19,8 @@ public class Film {
     private int duration;
     @JsonIgnore
     private Set<Long> likes;
-    private Set<FilmGenre> filmGenre;
-    private FilmRating filmRating;
+    private Set<FilmGenre> genre;
+    private FilmRating rating;
 
     public Film(Long id, String name, String description, LocalDate releaseDate, int duration) {
         this.id = id;
@@ -28,8 +28,8 @@ public class Film {
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
-        this.filmGenre = new HashSet<>();
-        this.filmRating = filmRating;
+        this.genre = new HashSet<>();
+        this.rating = rating;
         this.likes = new HashSet<>();
     }
 
@@ -41,11 +41,11 @@ public class Film {
         likes.remove(id);
     }
 
-    public Set<FilmGenre> getFilmGenre() {
-        return filmGenre;
+    public Set<FilmGenre> getGenre() {
+        return genre;
     }
 
     public FilmRating getFilmRating() {
-        return filmRating;
+        return rating;
     }
 }
