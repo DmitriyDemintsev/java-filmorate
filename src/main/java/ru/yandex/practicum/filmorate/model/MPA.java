@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-public enum FilmRating {
+public enum MPA {
     G, // нет возрастных ограничений
     PG, // детям рекомендуется смотреть фильм с родителями
     PG_13, // детям до 13 лет просмотр не желателен

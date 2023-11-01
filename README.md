@@ -53,10 +53,8 @@ WHERE name = 'CONFIRMED'
 
 SELECT DISTINCT user_id,
        COUNT(friend_id),
-       status_id
 FROM friends
 GROUP BY user_id,
-         status_id
 ORDER BY COUNT(friend_id);
 ```
 
@@ -71,7 +69,7 @@ SELECT f.film_id,
        f.description,
        f.releaseDate,
        f.duration,
-       f.rating_id,
+       f.mpa_id,
        fg.name, -- жанр
        COUNT(l.likes_id)
 FROM Film AS f

@@ -20,7 +20,7 @@ public class Film {
     @JsonIgnore
     private Set<Long> likes;
     private Set<FilmGenre> genres;
-    private FilmRating rating;
+    private MPA rating;
 
     public Film(Long id, String name, String description, LocalDate releaseDate, int duration) {
         this.id = id;
@@ -45,7 +45,7 @@ public class Film {
         return genres;
     }
 
-    public FilmRating getFilmRating() {
+    public MPA getFilmRating() {
         return rating;
     }
 }
