@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -17,14 +18,13 @@ public class UserService {
     private final UserStorage userStorage;
 
     @Autowired
-    public UserService(UserStorage userStorage) {
+    public UserService(@Qualifier("UserDbStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
     public void addToFriends(User user1, User user2) {
         if (!user1.getFriends().contains(user2.getId())) {
-            user1.addFriend(user2.getId());
-            user2.addFriend(user1.getId());
+            userStorage.addToFriends(user1, user2);
         } else {
             throw new UserAlreadyExistException("Пользователь с таким id " + user2.getId()
                     + " уже есть в списке ваших друзей");
@@ -33,8 +33,7 @@ public class UserService {
 
     public void dellFromFriends(User user1, User user2) {
         if (user1.getFriends().contains(user2.getId())) {
-            user1.removeFriend(user2.getId());
-            user2.removeFriend(user1.getId());
+            userStorage.dellFromFriends(user1, user2);
         } else {
             throw new UserAlreadyExistException("Пользователя с таким id " + user2.getId()
                     + " нет в списке ваших друзей");
@@ -54,22 +53,26 @@ public class UserService {
         return mutualFriends;
     }
 
-    public Set<Long> getListOfFriends(User user) {
+    public Set<Long> getUserFriends(User user) {
         return user.getFriends();
     }
 
+    @Qualifier("UserDbStorage")
     public User getUserById(Long id) {
         return userStorage.getUserById(id);
     }
 
+    @Qualifier("UserDbStorage")
     public User createUser(User user) {
         return userStorage.createUser(user);
     }
 
-    public User putUser(User user) {
-        return userStorage.putUser(user);
+    @Qualifier("UserDbStorage")
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
     }
 
+    @Qualifier("UserDbStorage")
     public List<User> findAllUsers() {
         return userStorage.findUsers();
     }

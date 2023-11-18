@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,10 +23,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         return ++idGeneratorForFilm;
     }
 
-    public Map<Long, Film> getFilms() {
-        return new HashMap<>(films);
-    }
-
     @Override
     public Film createFilm(Film film) {
         film.setId(generateIdForFilm());
@@ -34,7 +31,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film putFilm(Film film) {
+    public Film updateFilm(Film film) {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
@@ -44,7 +41,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
-    public ArrayList<Film> findAll() {
+    public ArrayList<Film> findFilms() {
         log.debug("Текущее количество фильмоф: {}", films.size());
         return new ArrayList<>(films.values());
     }
@@ -55,5 +52,15 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new FilmNotFoundException("Фильм с таким id " + id + "не найден");
         }
         return films.get(id);
+    }
+
+    @Override
+    public void addLike(Film film, User user) {
+        film.addLike(user.getId());
+    }
+
+    @Override
+    public void dellLike(Film film, User user) {
+        film.removeLike(user.getId());
     }
 }

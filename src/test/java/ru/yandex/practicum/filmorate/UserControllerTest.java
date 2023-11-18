@@ -122,7 +122,7 @@ public class UserControllerTest {
         user.setName("John Donne");
         user.setBirthday(birthday2);
 
-        userController.put(user);
+        userController.update(user);
         assertEquals(user.getEmail(), "test@test.com");
         assertEquals(user.getLogin(), "newLogin");
         assertEquals(user.getName(), "John Donne");
