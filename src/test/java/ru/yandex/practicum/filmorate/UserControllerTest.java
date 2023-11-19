@@ -62,6 +62,7 @@ public class UserControllerTest {
                         userController.create(user3);
                     }
                 });
+
         assertThrows(ValidationException.class,
                 new Executable() {
                     @Override

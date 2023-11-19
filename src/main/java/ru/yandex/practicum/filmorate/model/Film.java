@@ -37,7 +37,6 @@ public class Film {
         this.mpa = mpa;
     }
 
-
     public void addLike(long id) {
         likes.add(id);
     }

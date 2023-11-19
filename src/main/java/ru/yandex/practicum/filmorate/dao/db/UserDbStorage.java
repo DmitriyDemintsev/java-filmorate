@@ -13,8 +13,6 @@ import ru.yandex.practicum.filmorate.model.FriendsStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
-
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +38,7 @@ public class UserDbStorage implements UserStorage {
         User thisUser = jdbcTemplate.queryForObject("SELECT user_id, email, login, name, birthday" +
                         " FROM users WHERE email=?",
                 new UserMapper(), user.getEmail());
-        //log.debug("Создан новый пользователь {}", thisUser);
+        log.debug("Создан новый пользователь {}", thisUser);
         return thisUser;
     }
 
@@ -49,7 +47,7 @@ public class UserDbStorage implements UserStorage {
         jdbcTemplate.update("UPDATE users SET email=?, login=?, name=?, birthday=? WHERE user_id=?",
                 user.getEmail(), user.getLogin(), user.getName(), user.getBirthday(), user.getId());
         User thisUser = getUserById(user.getId());
-        //log.debug("Данные пользователя {} успешно обновлены", thisUser);
+        log.debug("Данные пользователя {} успешно обновлены", thisUser);
         return thisUser;
     }
 
@@ -79,17 +77,9 @@ public class UserDbStorage implements UserStorage {
         user1.setFriends(getUserFriends(user1.getId()));
     }
 
-
-//    public void addToFriends(long userId, long friendId) {
-//        jdbcTemplate.update("INSERT INTO friends (user_id, friend_id) VALUES (?, ?)",
-//                userId, friendId);
-//        getUserById(userId).setFriends(getUserFriends(userId));
-//    }
-
     public void dellFromFriends(User user1, User user2) {
         jdbcTemplate.update("DELETE FROM friends " +
                 "WHERE user_id=? AND friend_id=?", user1.getId(), user2.getId());
-        //log.debug("Пользователь {} удален из списка друзей пользователя {}", getUserById(friendId), getUserById(userId));
         user1.setFriends(getUserFriends(user1.getId()));
     }
 

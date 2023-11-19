@@ -19,7 +19,6 @@ import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @JdbcTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class FilmDbStorageTest {
 
     private final JdbcTemplate jdbcTemplate;
@@ -101,7 +100,6 @@ public class FilmDbStorageTest {
                 LocalDate.of(2001, 6, 18), 106, mpa);
         FilmDbStorage filmStorage = new FilmDbStorage(jdbcTemplate);
         film = filmStorage.createFilm(film);
-        System.out.println("!!!!! Control " + film);
 
         User firstUser = new User(0L, "user@email.ru", "vanya123", "Ivan Ivanov",
                 LocalDate.of(1990, 1, 1));
@@ -110,14 +108,9 @@ public class FilmDbStorageTest {
         UserDbStorage userStorage = new UserDbStorage(jdbcTemplate);
         firstUser = userStorage.createUser(firstUser);
         sekondUser = userStorage.createUser(sekondUser);
-        System.out.println("!!!!! Control " + firstUser);
-        System.out.println("!!!!! Control " + sekondUser);
 
         filmStorage.addLike(film, firstUser);
         filmStorage.addLike(film, sekondUser);
-        System.out.println("!!!!! Control " + firstUser);
-        System.out.println("!!!!! Control " + sekondUser);
-
 
         assertThat(film.getLikes())
                 .isNotNull();
@@ -143,8 +136,8 @@ public class FilmDbStorageTest {
         filmStorage.addLike(film, firstUser);
         filmStorage.addLike(film, sekondUser);
 
-        filmStorage.deleteLike(film, firstUser);
-        filmStorage.deleteLike(film, sekondUser);
+        filmStorage.dellLike(film, firstUser);
+        filmStorage.dellLike(film, sekondUser);
 
         assertThat(film.getLikes().size())
                 .isEqualTo(0);
@@ -324,43 +317,5 @@ public class FilmDbStorageTest {
 
         assertThat(filmStorage.getMpaRatingById(1L))
                 .isEqualTo(new MPA(1L, "G"));
-
     }
-
-//    @Test
-//    void checkControl() {
-//
-//        FilmDbStorage filmStorage = new FilmDbStorage((jdbcTemplate));
-//
-//        System.out.println("ЧТО ТУТ " + filmStorage.getMpaFromTable());
-//        //System.out.println("ЧТО ТУТ " + filmStorage.getIdByMpaRating(MPA.NC-17));
-//    }
-
 }
-
-//    @Test
-//    void checkControl() {
-//
-//        FilmDbStorage filmStorage = new FilmDbStorage((jdbcTemplate));
-//
-//        System.out.println("ЧТО ТУТ " + filmStorage.getIdByGenreName("Триллер"));
-//        System.out.println("ЧТО ТУТ " + filmStorage.getIdByMpaRating(MPA.NC-17));
-//    }
-//    @Test
-//    void checkUpdateGenre() {
-//        Film film = new Film(0L, "Форсаж",
-//                "Первая часть франшизы «Форсаж»",
-//                LocalDate.of(2001, 6, 18),
-//                106);
-//        FilmDbStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-//        film = filmStorage.createFilm(film);
-//        filmStorage.addGenreToFilm(film, "Комедия");
-//        System.out.println("ЭТО ДО " + filmStorage.getFilmGenres(film));
-//
-//        filmStorage.updateGenre(film, "Мультфильм");
-//
-//        System.out.println("ЭТО ПОСЛЕ " + filmStorage.getFilmGenres(film));
-//
-//        assertThat(film.getGenres().size())
-//                .isEqualTo(1);
-//    }

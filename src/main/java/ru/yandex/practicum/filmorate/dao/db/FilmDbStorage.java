@@ -75,10 +75,9 @@ public class FilmDbStorage implements FilmStorage {
             for (MovieGenre genreId: getFilmGenres(film)) {
                 film.addGenre(genreId);
             }
-
         }
         return films;
-    };
+    }
 
     @Override
     public Film getFilmById(long id) {
@@ -94,7 +93,7 @@ public class FilmDbStorage implements FilmStorage {
         thisFilm.setMpa(getMpaRatingById(thisFilm.getMpa().getId()));
         thisFilm.setLikes(getFilmLikes(thisFilm));
         return thisFilm;
-    };
+    }
 
     public void addLike(Film film, User user) {
         jdbcTemplate.update("INSERT INTO likes (film_id, user_id) VALUES (?, ?)", film.getId(), user.getId());
@@ -206,14 +205,4 @@ public class FilmDbStorage implements FilmStorage {
                 "FROM films WHERE film_id=?", Integer.class, film.getId());
         return MPARating;
     }
-
-//    public int setMpaId(int id) {
-//
-//    }
 }
-
-//    public Film updateGenre(Film film, String nameOfGenre) {
-//        Film newFilm = deleteGenre(film, getGenreNameById(film.getId()));
-//        film = addGenreToFilm(newFilm, nameOfGenre);
-//        log.debug("Обновлены сведения о жанрах для фильма {}", getFilmById(film.getId()));
-//    }
