@@ -118,7 +118,7 @@ public class UserControllerTest {
         User user = new User(0L, "test@test.com", "oldLogin", "Jim Beam", birthday1);
         userController.create(user);
 
-        user.setEmail("test@test.com");
+        //user.setEmail("test@test.com");
         user.setLogin("newLogin");
         user.setName("John Donne");
         user.setBirthday(birthday2);
