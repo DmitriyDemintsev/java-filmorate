@@ -41,7 +41,7 @@ public class FilmController {
 
     @PutMapping
     public Film put(@RequestBody Film film) {
-        filmService.getFilmById(film.getId());
+        //filmService.getFilmById(film.getId());
         validateFilm(film);
         return filmService.updateFilm(film);
     }
