@@ -37,8 +37,8 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws UserNotFoundException {
-        //userService.getUserById(user.getId());
-        //validateUser(user);
+        userService.getUserById(user.getId());
+        validateUser(user);
         return userService.updateUser(user);
     }
 
