@@ -61,7 +61,7 @@ public class UserDbStorage implements UserStorage {
     public User getUserById(long id) {
         List<User> userList = jdbcTemplate.query("SELECT *" +
                 " FROM users WHERE user_id=?", new UserMapper(), id);
-        if(userList.isEmpty()) {
+        if (userList.isEmpty()) {
             throw new UserNotFoundException("Пользователь с таким id " + id + "не найден");
         }
         User thisUser = userList.get(0);
@@ -93,8 +93,7 @@ public class UserDbStorage implements UserStorage {
     public FriendsStatus showFriendshipStatus(User user1, User user2) {
         jdbcTemplate.queryForList("SELECT friend_id FROM friends" +
                 " WHERE user_id=? AND friend_id=?", Long.class, user1.getId(), user2.getId());
-        if(user1.getFriends().contains(user2.getId()) && user2.getFriends().contains(user1.getId()))
-         {
+        if (user1.getFriends().contains(user2.getId()) && user2.getFriends().contains(user1.getId())) {
             return FriendsStatus.CONFIRMED;
         }
         return FriendsStatus.UNCONFIRMED;
