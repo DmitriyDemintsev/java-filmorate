@@ -201,8 +201,8 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     public int getIdMPARating(Film film) {
-        int MpaRating = jdbcTemplate.queryForObject("SELECT mpa_id " +
+        int mpaRating = jdbcTemplate.queryForObject("SELECT mpa_id " +
                 "FROM films WHERE film_id=?", Integer.class, film.getId());
-        return MpaRating;
+        return mpaRating;
     }
 }
