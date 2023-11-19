@@ -38,7 +38,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User updateUser(User user) throws UserAlreadyExistException {
+    public User updateUser(User user) throws UserNotFoundException {
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
             log.debug("Обновлены данные пользователя с электронной почтой " + user.getEmail());
