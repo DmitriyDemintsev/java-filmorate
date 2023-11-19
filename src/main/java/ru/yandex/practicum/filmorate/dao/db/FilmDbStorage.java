@@ -48,10 +48,10 @@ public class FilmDbStorage implements FilmStorage {
         thisFilm.setGenres(getFilmGenres(thisFilm));
         log.debug("Создан новый фильм {}", thisFilm);
         return thisFilm;
-    };
+    }
 
     @Override
-    public Film updateFilm(Film film){
+    public Film updateFilm(Film film) {
         jdbcTemplate.update("UPDATE films SET name=?, description=?, releaseDate=?, " +
                         "duration=?, mpa_id=?" +
                 "WHERE film_id=?",
@@ -64,7 +64,7 @@ public class FilmDbStorage implements FilmStorage {
         }
         thisFilm.setGenres(getFilmGenres(thisFilm));
         return thisFilm;
-    };
+    }
 
     @Override
     public List<Film> findFilms() {
@@ -201,8 +201,8 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     public int getIdMPARating(Film film) {
-        int MPARating = jdbcTemplate.queryForObject("SELECT mpa_id " +
+        int MpaRating = jdbcTemplate.queryForObject("SELECT mpa_id " +
                 "FROM films WHERE film_id=?", Integer.class, film.getId());
-        return MPARating;
+        return MpaRating;
     }
 }
