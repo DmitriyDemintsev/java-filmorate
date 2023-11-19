@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.InvalidEmailException;
 import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user) throws UserAlreadyExistException {
+    public User update(@RequestBody User user) throws UserNotFoundException {
         //userService.getUserById(user.getId());
         //validateUser(user);
         return userService.updateUser(user);
