@@ -36,7 +36,7 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws UserAlreadyExistException {
-        userService.getUserById(user.getId());
+        //userService.getUserById(user.getId());
         validateUser(user);
         return userService.updateUser(user);
     }
