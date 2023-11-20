@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dao.db.FilmDbStorage;
@@ -26,7 +25,6 @@ public class FilmController {
     private final FilmDbStorage filmDbStorage;
     private static LocalDate checkData = LocalDate.of(1895, 12, 28);
 
-    @Autowired
     public FilmController(FilmService filmService, UserService userService, FilmDbStorage filmDbStorage) {
         this.filmService = filmService;
         this.userService = userService;

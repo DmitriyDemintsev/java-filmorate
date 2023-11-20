@@ -100,11 +100,10 @@ public class FilmDbStorage implements FilmStorage {
                 "USING (VALUES (?, ?)) " +
                 "AS source (film_id, user_id) ON target.film_id=? AND target.user_id=? " +
                 "WHEN matched then " +
-                "UPDATE " +
-                "SET film_id=?, user_id=? " +
+                "UPDATE SET film_id=?, user_id=? " +
                 "WHEN NOT matched then " +
-                "INSERT (film_id, user_id) " +
-                "VALUES (?, ?)", film.getId(), user.getId(), film.getId(), user.getId(),
+                "INSERT (film_id, user_id) VALUES (?, ?)",
+                film.getId(), user.getId(), film.getId(), user.getId(),
                 film.getId(), user.getId(), film.getId(), user.getId());
         log.debug("Фильм {} отмечен как понравившийся", getFilmById(film.getId()));
         film.setLikes(getFilmLikes(film));
@@ -155,11 +154,10 @@ public class FilmDbStorage implements FilmStorage {
                         "USING (VALUES (?, ?)) " +
                         "AS source (film_id, genre_id) ON target.film_id=? AND target.genre_id=? " +
                         "WHEN matched then " +
-                        "UPDATE " +
-                        "SET film_id=?, genre_id=? " +
+                        "UPDATE SET film_id=?, genre_id=? " +
                         "WHEN NOT matched then " +
-                        "INSERT (film_id, genre_id) " +
-                        "VALUES (?, ?)", film.getId(), genre.getId(), film.getId(), genre.getId(),
+                        "INSERT (film_id, genre_id) VALUES (?, ?)",
+                        film.getId(), genre.getId(), film.getId(), genre.getId(),
                         film.getId(), genre.getId(), film.getId(), genre.getId());
         film.setGenres(getFilmGenres(film));
     }
