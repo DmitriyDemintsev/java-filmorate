@@ -16,7 +16,6 @@ public class GenreController {
 
     private final FilmDbStorage filmDbStorage;
 
-    @Autowired
     public GenreController(FilmDbStorage filmDbStorage) {
         this.filmDbStorage = filmDbStorage;
     }

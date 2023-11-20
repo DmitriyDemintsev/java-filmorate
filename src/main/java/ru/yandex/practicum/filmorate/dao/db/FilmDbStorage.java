@@ -96,7 +96,16 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     public void addLike(Film film, User user) {
-        jdbcTemplate.update("INSERT INTO likes (film_id, user_id) VALUES (?, ?)", film.getId(), user.getId());
+        jdbcTemplate.update("MERGE INTO likes AS target " +
+                "USING (VALUES (?, ?)) " +
+                "AS source (film_id, user_id) ON target.film_id=? AND target.user_id=? " +
+                "WHEN matched then " +
+                "UPDATE " +
+                "SET film_id=?, user_id=? " +
+                "WHEN NOT matched then " +
+                "INSERT (film_id, user_id) " +
+                "VALUES (?, ?)", film.getId(), user.getId(), film.getId(), user.getId(),
+                film.getId(), user.getId(), film.getId(), user.getId());
         log.debug("Фильм {} отмечен как понравившийся", getFilmById(film.getId()));
         film.setLikes(getFilmLikes(film));
     }
@@ -142,9 +151,16 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     public void addGenreToFilm(Film film, MovieGenre genre) {
-        jdbcTemplate.update("INSERT INTO film_genre (film_id, genre_id) " +
-                        "VALUES (?, ?)",
-                film.getId(), genre.getId());
+        jdbcTemplate.update("MERGE INTO film_genre AS target " +
+                        "USING (VALUES (?, ?)) " +
+                        "AS source (film_id, genre_id) ON target.film_id=? AND target.genre_id=? " +
+                        "WHEN matched then " +
+                        "UPDATE " +
+                        "SET film_id=?, genre_id=? " +
+                        "WHEN NOT matched then " +
+                        "INSERT (film_id, genre_id) " +
+                        "VALUES (?, ?)", film.getId(), genre.getId(), film.getId(), genre.getId(),
+                        film.getId(), genre.getId(), film.getId(), genre.getId());
         film.setGenres(getFilmGenres(film));
     }
 

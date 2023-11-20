@@ -72,8 +72,16 @@ public class UserDbStorage implements UserStorage {
     }
 
     public void addToFriends(User user1, User user2) {
-        jdbcTemplate.update("INSERT INTO friends (user_id, friend_id) VALUES (?, ?)",
-                user1.getId(), user2.getId());
+        jdbcTemplate.update("MERGE INTO friends AS target " +
+                        "USING (VALUES (?, ?)) " +
+                        "AS source (user_id, friend_id) ON target.user_id=? AND target.friend_id=? " +
+                        "WHEN matched then " +
+                        "UPDATE " +
+                        "SET user_id=?, friend_id=? " +
+                        "WHEN NOT matched then " +
+                        "INSERT (user_id, friend_id) " +
+                        "VALUES (?, ?)", user1.getId(), user2.getId(), user1.getId(), user2.getId(),
+                        user1.getId(), user2.getId(), user1.getId(), user2.getId());
         user1.setFriends(getUserFriends(user1.getId()));
     }
 

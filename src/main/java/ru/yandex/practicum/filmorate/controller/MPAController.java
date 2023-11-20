@@ -14,7 +14,6 @@ import java.util.List;
 @RequestMapping("/mpa")
 public class MPAController {
 
-    @Autowired
     public MPAController(FilmDbStorage filmDbStorage) {
         this.filmDbStorage = filmDbStorage;
     }
