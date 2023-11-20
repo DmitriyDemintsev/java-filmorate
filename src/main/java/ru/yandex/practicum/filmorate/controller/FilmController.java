@@ -26,6 +26,7 @@ public class FilmController {
     private final FilmDbStorage filmDbStorage;
     private static LocalDate checkData = LocalDate.of(1895, 12, 28);
 
+    @Autowired
     public FilmController(FilmService filmService, UserService userService, FilmDbStorage filmDbStorage) {
         this.filmService = filmService;
         this.userService = userService;
