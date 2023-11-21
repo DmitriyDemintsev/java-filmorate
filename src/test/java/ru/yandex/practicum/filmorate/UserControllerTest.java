@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.InvalidEmailException;
 import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
@@ -15,6 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DirtiesContext
+@TestPropertySource("classpath:test.properties")
 @SpringBootTest
 public class UserControllerTest {
 
@@ -25,16 +29,21 @@ public class UserControllerTest {
     void checkGetUsers() throws UserAlreadyExistException {
         LocalDate birthday1 = LocalDate.of(1943, 1, 1);
         LocalDate birthday2 = LocalDate.of(1954, 12, 31);
-        User user1 = new User(1L, "test@test_1.com", "try_test_1", "Jim Beam", birthday1);
-        User user2 = new User(2L, "test@test_2.com", "try_test_2", "John Donne", birthday2);
+        User user9 = new User(0L, "test@test_9.com", "try_test_9", "Jim Beam", birthday1);
+        User user10 = new User(0L, "test@test_10.com", "try_test_10", "John Donne", birthday2);
+        System.out.println("СМОТРИМ " + user9);
+        System.out.println("СМОТРИМ " + user10);
+
+        user9 = userController.create(user9);
+        user10 = userController.create(user10);
+        System.out.println("СМОТРИМ создание " + user9);
+        System.out.println("СМОТРИМ создание " + user10);
 
         List<User> users = userController.findUsers();
 
-        userController.create(user1);
-        userController.create(user2);
-
-        users.add(user1);
-        users.add(user2);
+        //users.add(user9);
+        //users.add(user10);
+        System.out.println("СМОТРИМ users" + users);
 
         assertEquals(users, userController.findUsers());
     }
@@ -53,8 +62,8 @@ public class UserControllerTest {
         User user7 = new User(0L, "test@test_7.com", "try_test_7", "Jim Beam", birthday2);
         User user8 = new User(0L, "test@test_1.com", "try_test_8", "Jim NickName", birthday3);
 
-        userController.create(user1);
-        userController.create(user2);
+        user1 = userController.create(user1);
+        user2 = userController.create(user2);
         assertThrows(InvalidEmailException.class,
                 new Executable() {
                     @Override
@@ -62,6 +71,7 @@ public class UserControllerTest {
                         userController.create(user3);
                     }
                 });
+
         assertThrows(ValidationException.class,
                 new Executable() {
                     @Override
@@ -115,17 +125,17 @@ public class UserControllerTest {
         LocalDate birthday1 = LocalDate.of(1943, 1, 1);
         LocalDate birthday2 = LocalDate.of(2017, 3, 23);
         User user = new User(0L, "test@test.com", "oldLogin", "Jim Beam", birthday1);
-        userController.create(user);
+        User firstUser = userController.create(user);
 
-        user.setEmail("test@test.com");
-        user.setLogin("newLogin");
-        user.setName("John Donne");
-        user.setBirthday(birthday2);
+        firstUser.setEmail("test@test.com");
+        firstUser.setLogin("newLogin");
+        firstUser.setName("John Donne");
+        firstUser.setBirthday(birthday2);
 
-        userController.put(user);
-        assertEquals(user.getEmail(), "test@test.com");
-        assertEquals(user.getLogin(), "newLogin");
-        assertEquals(user.getName(), "John Donne");
-        assertEquals(user.getBirthday(), birthday2);
+        User updateUser = userController.update(firstUser);
+        assertEquals(updateUser.getEmail(), "test@test.com");
+        assertEquals(updateUser.getLogin(), "newLogin");
+        assertEquals(updateUser.getName(), "John Donne");
+        assertEquals(updateUser.getBirthday(), birthday2);
     }
 }

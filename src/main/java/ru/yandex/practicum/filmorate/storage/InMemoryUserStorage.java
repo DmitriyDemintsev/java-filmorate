@@ -38,7 +38,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User putUser(User user) throws UserAlreadyExistException {
+    public User updateUser(User user) throws UserNotFoundException {
         if (users.containsKey(user.getId())) {
             users.put(user.getId(), user);
             log.debug("Обновлены данные пользователя с электронной почтой " + user.getEmail());
@@ -63,5 +63,15 @@ public class InMemoryUserStorage implements UserStorage {
             throw new UserNotFoundException("Пользователь с таким id " + id + "не найден");
         }
         return users.get(id);
+    }
+
+    @Override
+    public void addToFriends(User user1, User user2) {
+        user1.addFriend(user2.getId());
+    }
+
+    @Override
+    public void dellFromFriends(User user1, User user2) {
+        user1.removeFriend(user2.getId());
     }
 }

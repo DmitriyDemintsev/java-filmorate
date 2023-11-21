@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.InvalidEmailException;
 import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -23,7 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -35,10 +34,15 @@ public class UserController {
     }
 
     @PutMapping
-    public User put(@RequestBody User user) throws UserAlreadyExistException {
+    public User update(@RequestBody User user) throws UserNotFoundException {
         userService.getUserById(user.getId());
         validateUser(user);
-        return userService.putUser(user);
+        return userService.updateUser(user);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addToFriends(@PathVariable("id") long id, @PathVariable("friendId") long friendId) {
+        userService.addToFriends(userService.getUserById(id), userService.getUserById(friendId));
     }
 
     @GetMapping
@@ -47,35 +51,30 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") Long id) {
+    public User getUser(@PathVariable("id") long id) {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
-    public void addToFriends(@PathVariable("id") Long id, @PathVariable("friendId") Long friendId) {
-        userService.addToFriends(userService.getUserById(id), userService.getUserById(friendId));
-    }
-
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public void dellFromFriends(@PathVariable("id") Long id, @PathVariable("friendId") Long friendId) {
-        userService.dellFromFriends(userService.getUserById(id), userService.getUserById(friendId));
-    }
-
     @GetMapping("/{id}/friends")
-    public List<User> getListOfFriends(@PathVariable("id") Long id) {
-        return userService.getListOfFriends(userService.getUserById(id)).stream()
+    public List<User> getListOfFriends(@PathVariable("id") long id) {
+        return userService.getUserFriends(userService.getUserById(id)).stream()
                 .map(userService::getUserById)
                 .sorted(Comparator.comparing(User::getId))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> findListOfMutualFriends(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
+    public List<User> findListOfMutualFriends(@PathVariable("id") long id, @PathVariable("otherId") long otherId) {
         return userService.findListOfMutualFriends(userService.getUserById(id),
                         userService.getUserById(otherId)).stream()
                 .map(userService::getUserById)
                 .sorted(Comparator.comparing(User::getId))
                 .collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void dellFromFriends(@PathVariable("id") long id, @PathVariable("friendId") long friendId) {
+        userService.dellFromFriends(userService.getUserById(id), userService.getUserById(friendId));
     }
 
     private void validateUser(User user) {
@@ -93,7 +92,8 @@ public class UserController {
             if (user.getEmail().equals(entry.getEmail())
                     && user.getId() != entry.getId()) {
                 log.debug("Дублирующийся адрес Email");
-                throw new ValidationException("Данный адрес электронной почты принадлежит одному из пользователей");
+                throw new ValidationException("Данный адрес электронной почты " +
+                        "принадлежит одному из пользователей");
             }
         }
         if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {

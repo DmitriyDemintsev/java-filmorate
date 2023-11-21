@@ -33,6 +33,18 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND) //ошибка 404
+    public ErrorResponse handlerMPANotFoundException(final MPANotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND) //ошибка 404
+    public ErrorResponse handlerGenreNotFoundException(final GenreNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) //ошибка 500
     public ErrorResponse handleThrowable(final Throwable e) {
         log.error("Произошла непредвиденная ошибка", e);
