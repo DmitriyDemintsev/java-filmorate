@@ -1,5 +1,9 @@
 # java-filmorate
 Template repository for Filmorate project.
+Сервис для работы с фильмами, с возможностью ставить оценки фильмам и рекомендательной системой.
+
+
+Стеки: Spring Boot, SQL, PostgreSQL, Maven.
 
 ![ERM](ERM_filmorate.png)
 
