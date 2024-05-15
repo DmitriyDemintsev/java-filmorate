@@ -1,5 +1,5 @@
-# java-filmorate
-Template repository for Filmorate project.
+# Фильмотека
+
 Сервис для работы с фильмами, с возможностью ставить оценки фильмам и рекомендательной системой.
 
 
